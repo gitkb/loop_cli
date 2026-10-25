@@ -189,7 +189,6 @@ Meta processes configuration, applies filters, and delegates execution to loop_l
 | Project tags | No | Yes |
 | Plugin system | No | Yes |
 | Git-aware clone | No | Yes (via plugin) |
-| Snapshots | No | Yes |
 | MCP server | No | Yes |
 
 Use `loop` for simple multi-directory execution. Use `meta` for full multi-repository management.
