@@ -1,7 +1,7 @@
 use anyhow::Result;
 use clap::{CommandFactory, Parser};
 use colored::*;
-use loop_lib::{expand_directories, parse_config, run, LoopConfig};
+use loop_lib::{display_command, expand_directories, parse_config, run, LoopConfig};
 use std::path::PathBuf;
 
 #[derive(Parser)]
@@ -50,15 +50,13 @@ fn main() -> Result<()> {
         std::process::exit(0);
     }
 
-    let command = cli.command.join(" ");
-
     // Parse the .meta file
     let absolute_path = std::env::current_dir()?.join(&config_path);
 
     if cli.verbose {
         println!("{}", "Verbose mode enabled".green());
         println!("\nResolved config file path: {}", absolute_path.display());
-        println!("Executing command: {command}");
+        println!("Executing command: {}", display_command(&cli.command));
     }
 
     let mut config = if config_path.exists() {
@@ -85,7 +83,7 @@ fn main() -> Result<()> {
         config.directories = dirs;
     }
 
-    run(&config, &command)?;
+    run(&config, &cli.command)?;
 
     Ok(())
 }
