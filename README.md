@@ -204,6 +204,15 @@ Add aliases to your global config:
 loop --add-aliases-to-global-looprc
 ```
 
+loop runs commands without a shell, so an alias value is split into words
+(POSIX quoting, nothing expanded or run) that replace the program. An alias
+`ll="ls -la | less"` therefore runs `ls` with the arguments `-la`, `|` and
+`less`. For pipes and `&&`, ask for a shell:
+
+```bash
+loop sh -c 'ls -la | less'
+```
+
 ### Combining with Other Tools
 
 ```bash
@@ -230,7 +239,8 @@ let config = LoopConfig {
     ..Default::default()
 };
 
-let results = run(&["npm", "test"], &config)?;
+// The program and its arguments, run as given (no shell)
+run(&config, &["npm".to_string(), "test".to_string()])?;
 ```
 
 See [loop_lib documentation](../loop_lib/) for details.
