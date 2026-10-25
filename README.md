@@ -230,7 +230,8 @@ let config = LoopConfig {
     ..Default::default()
 };
 
-let results = run(&["npm", "test"], &config)?;
+// The program and its arguments, run as given (no shell)
+run(&config, &["npm".to_string(), "test".to_string()])?;
 ```
 
 See [loop_lib documentation](../loop_lib/) for details.
