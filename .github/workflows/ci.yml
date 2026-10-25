@@ -30,7 +30,7 @@ jobs:
         env:
           BRANCH: ${{ github.head_ref || github.ref_name }}
         run: |
-          for repo in loop_lib; do
+          for repo in loop_lib meta_core; do
             if git clone --depth 1 -b "$BRANCH" "https://github.com/gitkb/${repo}.git" 2>/dev/null; then
               echo "Cloned ${repo}@${BRANCH}"
             elif git clone --depth 1 "https://github.com/gitkb/${repo}.git"; then
@@ -46,7 +46,7 @@ jobs:
         run: |
           cat > Cargo.toml << 'EOF'
           [workspace]
-          members = ["loop_cli", "loop_lib"]
+          members = ["loop_cli", "loop_lib", "meta_core"]
           resolver = "2"
 
           [workspace.package]
@@ -78,10 +78,11 @@ jobs:
           path: loop_cli
 
       - name: Clone dependencies
+        shell: bash
         env:
           BRANCH: ${{ github.head_ref || github.ref_name }}
         run: |
-          for repo in loop_lib; do
+          for repo in loop_lib meta_core; do
             if git clone --depth 1 -b "$BRANCH" "https://github.com/gitkb/${repo}.git" 2>/dev/null; then
               echo "Cloned ${repo}@${BRANCH}"
             elif git clone --depth 1 "https://github.com/gitkb/${repo}.git"; then
@@ -96,7 +97,7 @@ jobs:
         run: |
           cat > Cargo.toml << 'EOF'
           [workspace]
-          members = ["loop_cli", "loop_lib"]
+          members = ["loop_cli", "loop_lib", "meta_core"]
           resolver = "2"
 
           [workspace.package]
@@ -130,10 +131,11 @@ jobs:
           path: loop_cli
 
       - name: Clone dependencies
+        shell: bash
         env:
           BRANCH: ${{ github.head_ref || github.ref_name }}
         run: |
-          for repo in loop_lib; do
+          for repo in loop_lib meta_core; do
             if git clone --depth 1 -b "$BRANCH" "https://github.com/gitkb/${repo}.git" 2>/dev/null; then
               echo "Cloned ${repo}@${BRANCH}"
             elif git clone --depth 1 "https://github.com/gitkb/${repo}.git"; then
@@ -148,7 +150,7 @@ jobs:
         run: |
           cat > Cargo.toml << 'EOF'
           [workspace]
-          members = ["loop_cli", "loop_lib"]
+          members = ["loop_cli", "loop_lib", "meta_core"]
           resolver = "2"
 
           [workspace.package]
