@@ -50,7 +50,7 @@ fn main() -> Result<()> {
         std::process::exit(0);
     }
 
-    // Parse the .meta file
+    // Parse the .looprc file
     let absolute_path = std::env::current_dir()?.join(&config_path);
 
     if cli.verbose {
