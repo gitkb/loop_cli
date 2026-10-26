@@ -30,13 +30,18 @@ jobs:
         env:
           BRANCH: ${{ github.head_ref || github.ref_name }}
         run: |
-          for repo in loop_lib; do
-            if git clone --depth 1 -b "$BRANCH" "https://github.com/gitkb/${repo}.git" 2>/dev/null; then
-              echo "Cloned ${repo}@${BRANCH}"
-            elif git clone --depth 1 "https://github.com/gitkb/${repo}.git"; then
-              echo "Branch ${BRANCH} not found for ${repo}; falling back to default branch"
+          for repo in loop_lib meta_core; do
+            url="https://github.com/gitkb/${repo}.git"
+            # Exit code 2 means the branch does not exist; anything else is an error
+            status=0
+            git ls-remote --exit-code --heads "$url" "refs/heads/$BRANCH" > /dev/null || status=$?
+            if [ "$status" -eq 0 ]; then
+              git clone --depth 1 -b "$BRANCH" "$url"
+            elif [ "$status" -eq 2 ]; then
+              echo "Branch ${BRANCH} not found for ${repo}; using the default branch"
+              git clone --depth 1 "$url"
             else
-              echo "::error::Failed to clone ${repo}"
+              echo "::error::Failed to look up ${repo}"
               exit 1
             fi
           done
@@ -46,7 +51,7 @@ jobs:
         run: |
           cat > Cargo.toml << 'EOF'
           [workspace]
-          members = ["loop_cli", "loop_lib"]
+          members = ["loop_cli", "loop_lib", "meta_core"]
           resolver = "2"
 
           [workspace.package]
@@ -78,16 +83,22 @@ jobs:
           path: loop_cli
 
       - name: Clone dependencies
+        shell: bash
         env:
           BRANCH: ${{ github.head_ref || github.ref_name }}
         run: |
-          for repo in loop_lib; do
-            if git clone --depth 1 -b "$BRANCH" "https://github.com/gitkb/${repo}.git" 2>/dev/null; then
-              echo "Cloned ${repo}@${BRANCH}"
-            elif git clone --depth 1 "https://github.com/gitkb/${repo}.git"; then
-              echo "Branch ${BRANCH} not found for ${repo}; falling back to default branch"
+          for repo in loop_lib meta_core; do
+            url="https://github.com/gitkb/${repo}.git"
+            # Exit code 2 means the branch does not exist; anything else is an error
+            status=0
+            git ls-remote --exit-code --heads "$url" "refs/heads/$BRANCH" > /dev/null || status=$?
+            if [ "$status" -eq 0 ]; then
+              git clone --depth 1 -b "$BRANCH" "$url"
+            elif [ "$status" -eq 2 ]; then
+              echo "Branch ${BRANCH} not found for ${repo}; using the default branch"
+              git clone --depth 1 "$url"
             else
-              echo "::error::Failed to clone ${repo}"
+              echo "::error::Failed to look up ${repo}"
               exit 1
             fi
           done
@@ -96,7 +107,7 @@ jobs:
         run: |
           cat > Cargo.toml << 'EOF'
           [workspace]
-          members = ["loop_cli", "loop_lib"]
+          members = ["loop_cli", "loop_lib", "meta_core"]
           resolver = "2"
 
           [workspace.package]
@@ -130,16 +141,22 @@ jobs:
           path: loop_cli
 
       - name: Clone dependencies
+        shell: bash
         env:
           BRANCH: ${{ github.head_ref || github.ref_name }}
         run: |
-          for repo in loop_lib; do
-            if git clone --depth 1 -b "$BRANCH" "https://github.com/gitkb/${repo}.git" 2>/dev/null; then
-              echo "Cloned ${repo}@${BRANCH}"
-            elif git clone --depth 1 "https://github.com/gitkb/${repo}.git"; then
-              echo "Branch ${BRANCH} not found for ${repo}; falling back to default branch"
+          for repo in loop_lib meta_core; do
+            url="https://github.com/gitkb/${repo}.git"
+            # Exit code 2 means the branch does not exist; anything else is an error
+            status=0
+            git ls-remote --exit-code --heads "$url" "refs/heads/$BRANCH" > /dev/null || status=$?
+            if [ "$status" -eq 0 ]; then
+              git clone --depth 1 -b "$BRANCH" "$url"
+            elif [ "$status" -eq 2 ]; then
+              echo "Branch ${BRANCH} not found for ${repo}; using the default branch"
+              git clone --depth 1 "$url"
             else
-              echo "::error::Failed to clone ${repo}"
+              echo "::error::Failed to look up ${repo}"
               exit 1
             fi
           done
@@ -148,7 +165,7 @@ jobs:
         run: |
           cat > Cargo.toml << 'EOF'
           [workspace]
-          members = ["loop_cli", "loop_lib"]
+          members = ["loop_cli", "loop_lib", "meta_core"]
           resolver = "2"
 
           [workspace.package]
