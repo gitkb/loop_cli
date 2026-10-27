@@ -41,7 +41,7 @@ struct Cli {
 }
 
 fn main() -> Result<()> {
-    let cli = Cli::parse();
+    let cli = parse_cli();
 
     let config_path = cli.config.unwrap_or_else(|| PathBuf::from(".looprc"));
 
@@ -86,4 +86,29 @@ fn main() -> Result<()> {
     run(&config, &cli.command)?;
 
     Ok(())
+}
+
+/// Parse the command line. Clap quotes rejected values as given, so an error
+/// is shown from the escaped arguments: the same error, with values that
+/// can't move the cursor or forge a line.
+fn parse_cli() -> Cli {
+    use clap::error::ErrorKind;
+    Cli::try_parse().unwrap_or_else(|e| match e.kind() {
+        ErrorKind::DisplayHelp
+        | ErrorKind::DisplayVersion
+        | ErrorKind::DisplayHelpOnMissingArgumentOrSubcommand => e.exit(),
+        _ => {
+            let shown = std::env::args_os()
+                .map(|arg| meta_core::display::escape(&arg.to_string_lossy()).into_owned());
+            match Cli::try_parse_from(shown) {
+                Err(shown) => shown.exit(),
+                Ok(_) => Cli::command()
+                    .error(
+                        ErrorKind::InvalidValue,
+                        "an argument contains a control character",
+                    )
+                    .exit(),
+            }
+        }
+    })
 }
