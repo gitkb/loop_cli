@@ -59,7 +59,10 @@ fn main() -> Result<()> {
             "\nResolved config file path: {}",
             meta_core::display::escape_path(&absolute_path)
         );
-        println!("Executing command: {}", display_command(&cli.command));
+        println!(
+            "Executing command: {}",
+            meta_core::display::escape(&display_command(&cli.command))
+        );
     }
 
     let mut config = if config_path.exists() {
