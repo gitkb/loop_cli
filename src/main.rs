@@ -55,7 +55,10 @@ fn main() -> Result<()> {
 
     if cli.verbose {
         println!("{}", "Verbose mode enabled".green());
-        println!("\nResolved config file path: {}", absolute_path.display());
+        println!(
+            "\nResolved config file path: {}",
+            meta_core::display::escape_path(&absolute_path)
+        );
         println!("Executing command: {}", display_command(&cli.command));
     }
 
