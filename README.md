@@ -185,7 +185,7 @@ Meta processes configuration, applies filters, and delegates execution to loop_l
 
 | Feature | `loop` | `meta` |
 |---------|--------|--------|
-| Config format | `.looprc` (JSON) | `.meta`/`.meta.yaml` |
+| Config format | `.looprc` (JSON) | `.meta.yaml` |
 | Project tags | No | Yes |
 | Plugin system | No | Yes |
 | Git-aware clone | No | Yes (via plugin) |
