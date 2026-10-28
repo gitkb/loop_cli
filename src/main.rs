@@ -100,9 +100,11 @@ fn main() -> Result<()> {
 fn parse_cli() -> Cli {
     use clap::error::ErrorKind;
     Cli::try_parse().unwrap_or_else(|e| match e.kind() {
+        // clap's invalid UTF-8 error doesn't echo the value
         ErrorKind::DisplayHelp
         | ErrorKind::DisplayVersion
-        | ErrorKind::DisplayHelpOnMissingArgumentOrSubcommand => e.exit(),
+        | ErrorKind::DisplayHelpOnMissingArgumentOrSubcommand
+        | ErrorKind::InvalidUtf8 => e.exit(),
         _ => {
             let shown = std::env::args_os()
                 .map(|arg| meta_core::display::escape(&arg.to_string_lossy()).into_owned());
